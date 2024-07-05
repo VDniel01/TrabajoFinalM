@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instancia;
-    public Text puntosTexto;
+    public Text puntosText;
     private int puntos;
 
     void Awake()
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public void AñadirPuntos(int cantidad)
     {
         puntos += cantidad;
-        puntosTexto.text = "Puntos: " + puntos;
+        puntosText.text = "Puntos: " + puntos.ToString();
     }
 
     public bool UsarPuntos(int cantidad)
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         if (puntos >= cantidad)
         {
             puntos -= cantidad;
-            puntosTexto.text = "Puntos: " + puntos;
+            puntosText.text = "Puntos: " + puntos.ToString();
             return true;
         }
         return false;

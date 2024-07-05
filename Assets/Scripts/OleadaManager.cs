@@ -4,42 +4,40 @@ using UnityEngine;
 
 public class OleadaManager : MonoBehaviour
 {
+    public Transform[] puntosDeSpawn;
     public GameObject enemigoNormalPrefab;
     public GameObject enemigoTanquePrefab;
     public GameObject bossPrefab;
-    public Transform[] puntosDeSpawn;
-
-    private int oleadaActual = 0;
+    public int oleada = 0;
 
     void Start()
     {
-        IniciarOleada();
+        StartCoroutine(IniciarOleadas());
     }
 
-    void IniciarOleada()
+    IEnumerator IniciarOleadas()
     {
-        oleadaActual++;
-        StartCoroutine(SpawnOleada());
-    }
-
-    IEnumerator SpawnOleada()
-    {
-        for (int i = 0; i < oleadaActual * 5; i++)
+        while (true)
         {
-            SpawnEnemigo(enemigoNormalPrefab);
-            yield return new WaitForSeconds(1f);
+            oleada++;
+            for (int i = 0; i < oleada * 10; i++)
+            {
+                SpawnEnemigo(enemigoNormalPrefab);
+                yield return new WaitForSeconds(0.5f);
+            }
+            for (int i = 0; i < oleada * 2; i++)
+            {
+                SpawnEnemigo(enemigoTanquePrefab);
+                yield return new WaitForSeconds(1f);
+            }
+            SpawnEnemigo(bossPrefab);
+            yield return new WaitForSeconds(5f);
         }
-
-        SpawnEnemigo(bossPrefab);
-        yield return new WaitForSeconds(1f);
-
-        yield return new WaitForSeconds(5f); // Tiempo de descanso entre oleadas
-        IniciarOleada();
     }
 
     void SpawnEnemigo(GameObject enemigoPrefab)
     {
-        int spawnIndex = Random.Range(0, puntosDeSpawn.Length);
-        Instantiate(enemigoPrefab, puntosDeSpawn[spawnIndex].position, Quaternion.identity);
+        Transform puntoDeSpawn = puntosDeSpawn[Random.Range(0, puntosDeSpawn.Length)];
+        Instantiate(enemigoPrefab, puntoDeSpawn.position, puntoDeSpawn.rotation);
     }
 }

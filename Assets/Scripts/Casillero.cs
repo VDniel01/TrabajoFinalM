@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class Casillero : MonoBehaviour
 {
+    public GameObject torrePrefab;
+    public int costoTorre = 50;
     private GameObject torre;
+    private UIManager uiManager;
+
+    void Start()
+    {
+        uiManager = FindObjectOfType<UIManager>();
+    }
 
     void OnMouseDown()
     {
-        UIManager.instancia.MostrarPanelDeTorres(this);
+        uiManager.MostrarMenuColocarTorre(this);
     }
 
-    public void ColocarTorre(GameObject torrePrefab)
+    public void ColocarTorre()
     {
-        if (torre == null && GameManager.instancia.UsarPuntos(10)) // Ajusta el costo de las torres según sea necesario
+        if (torre == null && GameManager.instancia.UsarPuntos(costoTorre))
         {
-            torre = Instantiate(torrePrefab, transform.position, Quaternion.identity);
+            torre = Instantiate(torrePrefab, transform.position, transform.rotation);
         }
     }
 }

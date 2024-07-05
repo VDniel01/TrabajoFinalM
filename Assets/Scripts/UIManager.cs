@@ -1,40 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instancia;
-
-    public GameObject panelDeTorres;
+    public GameObject menuColocarTorre;
     private Casillero casilleroSeleccionado;
 
-    void Awake()
-    {
-        if (instancia == null)
-        {
-            instancia = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    public void MostrarPanelDeTorres(Casillero casillero)
+    public void MostrarMenuColocarTorre(Casillero casillero)
     {
         casilleroSeleccionado = casillero;
-        panelDeTorres.SetActive(true);
+        menuColocarTorre.SetActive(true);
     }
 
-    public void OcultarPanelDeTorres()
+    public void OcultarMenuColocarTorre()
     {
-        panelDeTorres.SetActive(false);
+        menuColocarTorre.SetActive(false);
     }
 
-    public void SeleccionarTorre(GameObject torrePrefab)
+    public void ColocarTorreSeleccionada()
     {
-        casilleroSeleccionado.ColocarTorre(torrePrefab);
-        OcultarPanelDeTorres();
+        if (casilleroSeleccionado != null)
+        {
+            casilleroSeleccionado.ColocarTorre();
+            OcultarMenuColocarTorre();
+        }
     }
 }
