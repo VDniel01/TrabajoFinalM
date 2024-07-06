@@ -1,40 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemigo : MonoBehaviour
 {
+    [Header("Movvimiento")]
     public List<Transform> waypoints = new List<Transform>();
     private int targetIndex = 1;
     public float movementSpeed = 4;
     public float rotationSpeed = 6;
     private Animator anim;
-    private bool isTakeDamage;
+
+    [Header("Life")]
     private bool isDead;
-    // Start is called before the first frame update
-    void Start()
+    public float maxLife = 100;
+    public float currentLife = 0;
+    public Image barraVidaimage;
+    private Transform canvasRoot;
+    private Quaternion intilLifeRotatoin;
+
+    private void Awake()
     {
+        canvasRoot = barraVidaimage.transform.parent.parent;
+        intilLifeRotatoin = canvasRoot.rotation;
         anim = GetComponent<Animator>();
         anim.SetBool("Movement", true);
     }
 
-    // Update is called once per frame
+    private void Start()
+    {
+        currentLife = maxLife;
+    }
     void Update()
     {
+        canvasRoot.transform.rotation = intilLifeRotatoin;
         Movement();
         LookAt();
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            isTakeDamage = !isTakeDamage;
-            anim.SetBool("TakeDamage", isTakeDamage);
+            TakeDamege(10);
         }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            isDead = true;
-            anim.SetBool("Die", true);
-        }
+
     }
 
+    #region Moviment & Rotations
     private void Movement()
     {
         if (isDead)
@@ -64,4 +74,55 @@ public class Enemigo : MonoBehaviour
         var rootTarget = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, rootTarget, rotationSpeed * Time.deltaTime);
     }
+    #endregion
+
+    public void TakeDamege(float dmg)
+    {
+        var newLife = currentLife - dmg;
+        if (isDead)
+        {
+            return;
+        }
+        if (newLife <= 0)
+        {
+            OnDead();
+
+        }
+        currentLife = newLife;
+        var fillValue = currentLife * 1 / 100;
+        barraVidaimage.fillAmount = fillValue;
+        currentLife = newLife;
+        StartCoroutine(AnimationDamge());
+    }
+
+    private IEnumerator AnimationDamge()
+    {
+        anim.SetBool("TakeDamage", true);
+        yield return new WaitForSeconds(0.1f);
+        anim.SetBool("TakeDamage", false);
+    }
+
+    private void OnDead()
+    {
+        isDead = true;
+        anim.SetBool("TakeDamage", false);
+        anim.SetBool("Die", true);
+        currentLife = 0;
+        barraVidaimage.fillAmount = 0;
+        StartCoroutine(OnDaedEffect());
+    }
+
+    private IEnumerator OnDaedEffect()
+    {
+        yield return new WaitForSeconds(1f);
+        var FinalPositionY = transform.position.y - 5;
+        Vector3 target = new Vector3(transform.position.x, FinalPositionY, transform.position.z);
+        while (transform.position.y != FinalPositionY)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, 1.5f * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+
 }
