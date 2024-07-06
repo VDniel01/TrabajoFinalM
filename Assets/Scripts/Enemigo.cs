@@ -26,12 +26,23 @@ public class Enemigo : MonoBehaviour
         intilLifeRotatoin = canvasRoot.rotation;
         anim = GetComponent<Animator>();
         anim.SetBool("Movement", true);
+        maxWaypoint();
     }
 
     private void Start()
     {
         currentLife = maxLife;
     }
+    private void maxWaypoint()
+    {
+        waypoints.Clear();
+        var rootWaypoint = GameObject.Find("WaypointContainer").transform;
+        for (int i = 0; i < rootWaypoint.childCount; i++)
+        {
+            waypoints.Add(rootWaypoint.GetChild(i));
+        }
+    }
+
     void Update()
     {
         canvasRoot.transform.rotation = intilLifeRotatoin;
