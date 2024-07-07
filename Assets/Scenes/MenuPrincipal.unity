@@ -411,7 +411,7 @@ GameObject:
   - component: {fileID: 197662850}
   - component: {fileID: 197662849}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: ButtonTowerCold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -480,7 +480,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 197662850}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 400322926}
+        m_TargetAssemblyTypeName: TowerRequestManager, Assembly-CSharp
+        m_MethodName: RequestTowerBuy
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Torre Cold
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &197662850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,7 +575,7 @@ GameObject:
   - component: {fileID: 309258173}
   - component: {fileID: 309258172}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: ButtonTowerFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -632,7 +644,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 309258173}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 400322926}
+        m_TargetAssemblyTypeName: TowerRequestManager, Assembly-CSharp
+        m_MethodName: RequestTowerBuy
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Torre Fire
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &309258173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -788,6 +812,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be93e4ed534e6c54cb38fdd06520d2d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towers:
+  - {fileID: 5754644416196894823, guid: 474e887e41680d84fbeb50b822b9266a, type: 3}
+  - {fileID: 8379870744508231237, guid: 4ef3f0c22d9e76842981f0f9e95100e6, type: 3}
+  - {fileID: 246058415890558269, guid: 1994ce82bf0ede94e82046b0b48e34c3, type: 3}
 --- !u!95 &400322927
 Animator:
   serializedVersion: 5
@@ -2384,7 +2412,7 @@ GameObject:
   - component: {fileID: 1096286177}
   - component: {fileID: 1096286176}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ButtonTowerCanon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2453,7 +2481,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1096286177}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 400322926}
+        m_TargetAssemblyTypeName: TowerRequestManager, Assembly-CSharp
+        m_MethodName: RequestTowerBuy
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Torre Canon
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1096286177
 MonoBehaviour:
   m_ObjectHideFlags: 0

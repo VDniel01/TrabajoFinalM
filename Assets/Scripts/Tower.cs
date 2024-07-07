@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string towerName;
+    public string towerDescription;
+    public float buyPrice;
+    public float sellPrice;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }
