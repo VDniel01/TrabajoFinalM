@@ -147,6 +147,7 @@ MonoBehaviour:
   waypoints: []
   movementSpeed: 2
   rotationSpeed: 6
+  isDead: 0
   maxLife: 200
   currentLife: 0
   barraVidaimage: {fileID: 4605796447720391610}

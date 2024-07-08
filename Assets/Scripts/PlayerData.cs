@@ -9,6 +9,7 @@ public class PlayerData : MonoBehaviour
 
     private void Awake()
     {
+        #region MyRegion
         if (instance == null)
         {
             instance = this;
@@ -17,11 +18,13 @@ public class PlayerData : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        #endregion
     }
 
     private void Start()
     {
         UIPlayer.instance.UpdateMoneyTexto(money.ToString());
+
     }
 
     public void TakeMoney(int amount)
@@ -33,11 +36,9 @@ public class PlayerData : MonoBehaviour
         }
         UIPlayer.instance.UpdateMoneyTexto(money.ToString());
     }
-
     public void AddMoney(int amount)
     {
         money += amount;
-        UIPlayer.instance.UpdateMoneyTexto(money.ToString());
-        Debug.Log("Dinero añadido: " + money);
     }
+
 }

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIpanelManager : MonoBehaviour
 {
+
     private Tower tower;
     public TextMeshProUGUI towerNameTxt;
     public TextMeshProUGUI towerDescripcionTxt;
@@ -19,43 +20,37 @@ public class UIpanelManager : MonoBehaviour
     public Button buttonUpgrade;
     public Button buttonSell;
 
+
     private void Awake()
     {
-        if (instance == null)
+        if (instance==null)
         {
             instance = this;
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
     }
+
 
     public void OpenPanel(Tower tower)
     {
         if (tower == null)
         {
-            Debug.LogWarning("Es necesario pasar un tower");
-            return;
+            Debug.Log("Es necesario pasar un tower");
         }
         this.tower = tower;
-
-        // Asegúrate de limpiar y agregar los listeners
-        buttonUpgrade.onClick.RemoveAllListeners();
-        buttonUpgrade.onClick.AddListener(UpdateTower);
-
-        buttonSell.onClick.RemoveAllListeners();
-        buttonSell.onClick.AddListener(SellTower);
-
         if (tower.currentIndexUpgrade >= tower.towerUpgradeData.Count)
         {
             buttonUpgrade.gameObject.SetActive(false);
         }
         else
         {
-            buttonUpgrade.gameObject.SetActive(true);
+            buttonUpgrade.onClick.AddListener(UpdateTower);
         }
-
+        buttonSell.onClick.RemoveAllListeners();
+        buttonSell.onClick.AddListener(sellTower);
         SetValue();
         root.SetActive(true);
     }
@@ -70,7 +65,7 @@ public class UIpanelManager : MonoBehaviour
         {
             tower.CurrendData = tower.towerUpgradeData[tower.currentIndexUpgrade];
             PlayerData.instance.TakeMoney(tower.towerUpgradeData[tower.currentIndexUpgrade].upgradePrice);
-            if (tower.currentIndexUpgrade + 1 >= tower.towerUpgradeData.Count)
+            if (tower.currentIndexUpgrade +1 >= tower.towerUpgradeData.Count)
             {
                 buttonUpgrade.gameObject.SetActive(false);
             }
@@ -86,19 +81,14 @@ public class UIpanelManager : MonoBehaviour
         }
     }
 
-    public void SellTower()
+    public void sellTower()
     {
-        Debug.Log("Attempting to sell tower..."); // Mensaje de depuración
-        if (Node.selectedNode != null)
+        if (tower != null)
         {
-            Debug.Log("Selected node found: " + Node.selectedNode.name); // Mensaje de depuración
-            Node.selectedNode.SellTower();
-            ClosedPanel();
+            PlayerData.instance.AddMoney(tower.CurrendData.sellPrice);
+            Destroy(tower.gameObject);
         }
-        else
-        {
-            Debug.LogWarning("No selected node to sell the tower.");
-        }
+
     }
 
     private void SetValue()
@@ -110,16 +100,11 @@ public class UIpanelManager : MonoBehaviour
         towerVelocidadTxt.text = "Velocidad : " + tower.CurrendData.timeToShoot.ToString();
         towerSellPriceTxt.text = "$ : " + tower.CurrendData.sellPrice.ToString();
         towerUpgradePriceTxt.text = "Mejorar : " + tower.CurrendData.upgradePrice.ToString();
+
     }
 
     public void ClosedPanel()
     {
         root.SetActive(false);
-        tower = null;
-        if (Node.selectedNode != null)
-        {
-            Node.selectedNode.OnCloseSelection();
-            Node.selectedNode = null;
-        }
     }
 }

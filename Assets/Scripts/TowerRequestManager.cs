@@ -33,9 +33,21 @@ public class TowerRequestManager : MonoBehaviour
     public void RequestTowerBuy(string towerName)
     {
         var tower = towers.Find(x => x.towerName == towerName);
+        if (tower.CurrendData.buyPrice <= PlayerData.instance.money)
+        {
+            PlayerData.instance.TakeMoney(tower.CurrendData.buyPrice);
+        }
+        else
+        {
+            Debug.Log("no tenemos nada vieja... tamos pobre" + towerName);
+            return;
+        }
         var towerGo = Instantiate(tower, Node.selectedNode.transform.position, tower.transform.rotation);
+        Node.selectedNode.towerOcuped = towerGo;
+        Node.selectedNode.isOcupado = true;
         OnCloseRequestPanel();
         Node.selectedNode.OnCloseSelection();
         Node.selectedNode = null;
+
     }
 }

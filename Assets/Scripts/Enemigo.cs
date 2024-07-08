@@ -5,85 +5,116 @@ using UnityEngine.UI;
 
 public class Enemigo : MonoBehaviour
 {
-    [Header("Movvimiento")]
+    [Header("Movimiento")]
     public List<Transform> waypoints = new List<Transform>();
     private int targetIndex = 1;
     public float movementSpeed = 4;
     public float rotationSpeed = 6;
     private Animator anim;
 
-    [Header("Life")]
-    private bool isDead;
+    [Header("Vida")]
+    public bool isDead = false;
     public float maxLife = 100;
     public float currentLife = 0;
     public Image barraVidaimage;
     private Transform canvasRoot;
     private Quaternion intilLifeRotatoin;
 
+    [Header("Muerto")]
+    public int MoneyOnDead = 10;
+
+
     private void Awake()
     {
-        canvasRoot = barraVidaimage.transform.parent.parent;
-        intilLifeRotatoin = canvasRoot.rotation;
+        canvasRoot = barraVidaimage?.transform.parent.parent;
+        intilLifeRotatoin = canvasRoot?.rotation ?? Quaternion.identity;
         anim = GetComponent<Animator>();
-        anim.SetBool("Movement", true);
+        if (GetComponent<Collider>() == null)
+        {
+            gameObject.AddComponent<BoxCollider>();
+        }
+        if (anim == null)
+        {
+            Debug.LogError("Animator component is missing on " + gameObject.name);
+        }
+        else
+        {
+            anim.SetBool("Movement", true);
+        }
         maxWaypoint();
     }
 
     private void Start()
     {
+        isDead = false; // Asegúrate de que el enemigo no esté muerto al inicio
         currentLife = maxLife;
     }
+
     private void maxWaypoint()
     {
         waypoints.Clear();
-        var rootWaypoint = GameObject.Find("WaypointContainer").transform;
-        for (int i = 0; i < rootWaypoint.childCount; i++)
+        var rootWaypoint = GameObject.Find("WaypointContainer")?.transform;
+        if (rootWaypoint != null)
         {
-            waypoints.Add(rootWaypoint.GetChild(i));
+            for (int i = 0; i < rootWaypoint.childCount; i++)
+            {
+                waypoints.Add(rootWaypoint.GetChild(i));
+            }
+        }
+        else
+        {
+            Debug.LogError("WaypointContainer not found in the scene.");
         }
     }
 
     void Update()
     {
-        canvasRoot.transform.rotation = intilLifeRotatoin;
-        Movement();
-        LookAt();
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (canvasRoot != null)
         {
-            TakeDamege(10);
+            canvasRoot.transform.rotation = intilLifeRotatoin;
         }
-
+        if (!isDead) // Solo mover si no está muerto
+        {
+            Movement();
+            LookAt();
+        }
     }
 
-    #region Moviment & Rotations
+    #region Movimiento y Rotaciones
     private void Movement()
     {
         if (isDead)
         {
             return;
         }
-        transform.position = Vector3.MoveTowards(transform.position, waypoints[targetIndex].position, movementSpeed * Time.deltaTime);
-        var distance = Vector3.Distance(transform.position, waypoints[targetIndex].position);
-        if (distance <= 0.1f)
+        if (waypoints.Count > 0)
         {
-            if (targetIndex >= waypoints.Count -1)
+            transform.position = Vector3.MoveTowards(transform.position, waypoints[targetIndex].position, movementSpeed * Time.deltaTime);
+            var distance = Vector3.Distance(transform.position, waypoints[targetIndex].position);
+            if (distance <= 0.1f)
             {
-                Debug.Log("subir targetindex");
-                return;
+                if (targetIndex >= waypoints.Count - 1)
+                {
+                    Debug.Log("Subir targetIndex");
+                    return;
+                }
+                targetIndex++;
             }
-            targetIndex++;
         }
     }
+
     private void LookAt()
     {
         if (isDead)
         {
             return;
         }
-        //transform.LookAt(waypoints[targetIndex]);
-        var dir = waypoints[targetIndex].position - transform.position;
-        var rootTarget = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rootTarget, rotationSpeed * Time.deltaTime);
+        if (waypoints.Count > 0)
+        {
+            var dir = waypoints[targetIndex].position - transform.position;
+            var rootTarget = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rootTarget, rotationSpeed * Time.deltaTime);
+        }
     }
     #endregion
 
@@ -97,7 +128,6 @@ public class Enemigo : MonoBehaviour
         if (newLife <= 0)
         {
             OnDead();
-
         }
         currentLife = newLife;
         var fillValue = currentLife * 1 / 100;
@@ -116,11 +146,12 @@ public class Enemigo : MonoBehaviour
     private void OnDead()
     {
         isDead = true;
-        anim.SetBool("TakeDamage", false);
+        anim.SetBool("TakeDamage", false);  
         anim.SetBool("Die", true);
         currentLife = 0;
         barraVidaimage.fillAmount = 0;
         StartCoroutine(OnDaedEffect());
+        PlayerData.instance.AddMoney(MoneyOnDead);
     }
 
     private IEnumerator OnDaedEffect()
@@ -132,10 +163,7 @@ public class Enemigo : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, target, 1.5f * Time.deltaTime);
             yield return null;
-           
         }
-        Destroy(this);
+        Destroy(gameObject);
     }
-
-
 }

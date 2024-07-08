@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+    
 [System.Serializable]
-public class TowerData
+public class TowerData 
 {
     [Header("Price")]
     public int upgradePrice;
@@ -11,7 +11,10 @@ public class TowerData
     public int sellPrice = 8;
 
     [Header("TowerSetting")]
-    public float range;
-    public int dmg;
-    public float timeToShoot;
+    public float range = 10;
+    public float dmg = 20;
+    public float timeToShoot = 1;
+
+
+    
 }
