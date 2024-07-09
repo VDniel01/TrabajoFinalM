@@ -457,7 +457,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Mejorar
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3077,7 +3077,7 @@ MonoBehaviour:
     - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
     - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
   - timerPerCreation: 0.7
-    timerForNextWave: 10
+    timerForNextWave: 1
     counterToNextWavve: 0
     enemigos:
     - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
@@ -3096,7 +3096,7 @@ MonoBehaviour:
     - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
     - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
   - timerPerCreation: 0.7
-    timerForNextWave: 10
+    timerForNextWave: 1
     counterToNextWavve: 0
     enemigos:
     - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
@@ -4945,19 +4945,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1757054441}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 176456798}
-        m_TargetAssemblyTypeName: UIpanelManager, Assembly-CSharp
-        m_MethodName: UpdateTower
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1757054441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12861,19 +12849,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2087879289}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 176456798}
-        m_TargetAssemblyTypeName: UIpanelManager, Assembly-CSharp
-        m_MethodName: SellTower
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2087879289
 MonoBehaviour:
   m_ObjectHideFlags: 0
