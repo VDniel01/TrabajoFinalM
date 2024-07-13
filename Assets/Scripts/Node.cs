@@ -14,34 +14,37 @@ public class Node : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-
     }
 
     private void OnMouseDown()
     {
-        if (isOcupado)
-        {
-            UIpanelManager.instance.OpenPanel(towerOcuped);
-            return;
-        }
-
-
         if (selectedNode && selectedNode != this)
         {
             selectedNode.OnCloseSelection();
         }
-     
+
         selectedNode = this;
-        
         isSelected = !isSelected;
+        anim.SetBool("isSelected", isSelected);
+
         if (isSelected)
         {
-            TowerRequestManager.Instance.OnOpenRequestPanel();
+            if (isOcupado)
+            {
+                UIpanelManager.instance.OpenPanel(towerOcuped);
+            }
+            else
+            {
+                TowerRequestManager.Instance.OnOpenRequestPanel();
+            }
         }
         else
+        {
             TowerRequestManager.Instance.OnCloseRequestPanel();
-        anim.SetBool("isSelected", isSelected);
+            UIpanelManager.instance.ClosedPanel();
+        }
     }
+
     public void OnCloseSelection()
     {
         isSelected = false;

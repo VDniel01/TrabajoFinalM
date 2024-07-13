@@ -42,12 +42,13 @@ public class TowerRequestManager : MonoBehaviour
             Debug.Log("no tenemos nada vieja... tamos pobre" + towerName);
             return;
         }
+
         var towerGo = Instantiate(tower, Node.selectedNode.transform.position, tower.transform.rotation);
         Node.selectedNode.towerOcuped = towerGo;
         Node.selectedNode.isOcupado = true;
         OnCloseRequestPanel();
         Node.selectedNode.OnCloseSelection();
         Node.selectedNode = null;
-
     }
+
 }
