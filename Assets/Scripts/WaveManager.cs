@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class WaveManager : MonoBehaviour
 {
+    public static WaveManager instance; // Añadimos una instancia estática
+
     public List<WaveObject> waves = new List<WaveObject>();
     public bool isWaitingForNextWave;
     public bool wavesFinish;
@@ -15,16 +17,28 @@ public class WaveManager : MonoBehaviour
     public TextMeshProUGUI counterText;
     public GameObject buttonNextWave;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void Start()
     {
-        StartCoroutine(ProcesWave());
+        // Quitamos el llamado a StartCoroutine(ProcesWave()); para iniciar las oleadas con la primera torre
     }
+
     private void Update()
     {
         CheckCounterAndShowButton();
         CheckCounterForNExtWave();
     }
-
 
     private void CheckCounterForNExtWave()
     {
@@ -60,24 +74,27 @@ public class WaveManager : MonoBehaviour
             yield return new WaitForSeconds(waves[currentWave].timerPerCreation);
         }
         isWaitingForNextWave = true;
-        if (currentWave >= waves.Count -1)
+        if (currentWave >= waves.Count - 1)
         {
             Debug.Log("Nivel Terminado");
             wavesFinish = true;
         }
     }
 
-   
     private void CheckCounterAndShowButton()
     {
         if (!wavesFinish)
         {
             buttonNextWave.SetActive(isWaitingForNextWave);
             counterText.gameObject.SetActive(isWaitingForNextWave);
-
         }
     }
-        
+
+    public void StartWaveProcess() // Método para iniciar el proceso de oleadas
+    {
+        StartCoroutine(ProcesWave());
+    }
+
     [System.Serializable]
     public class WaveObject
     {

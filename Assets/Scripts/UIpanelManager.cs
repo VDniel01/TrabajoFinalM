@@ -40,12 +40,15 @@ public class UIpanelManager : MonoBehaviour
         }
         this.tower = tower;
 
+        buttonUpgrade.gameObject.SetActive(true);  // Siempre activa el botón de mejora al abrir el panel
+
         if (tower.currentIndexUpgrade >= tower.towerUpgradeData.Count)
         {
             buttonUpgrade.gameObject.SetActive(false);
         }
         else
         {
+            buttonUpgrade.onClick.RemoveAllListeners();  // Limpia todos los listeners anteriores
             buttonUpgrade.onClick.AddListener(UpdateTower);
         }
 
@@ -75,8 +78,8 @@ public class UIpanelManager : MonoBehaviour
             else
             {
                 tower.currentIndexUpgrade++;
+                OpenPanel(tower);  // Actualiza el panel con la nueva información
             }
-            OpenPanel(tower);
         }
         else
         {
@@ -88,8 +91,10 @@ public class UIpanelManager : MonoBehaviour
     {
         if (tower != null)
         {
+            Debug.Log("Vendiendo torre por: " + tower.CurrendData.sellPrice);
             PlayerData.instance.AddMoney(tower.CurrendData.sellPrice);
             Destroy(tower.gameObject);
+
             if (Node.selectedNode != null)
             {
                 Node.selectedNode.isOcupado = false;
@@ -97,6 +102,7 @@ public class UIpanelManager : MonoBehaviour
                 Node.selectedNode.OnCloseSelection();
                 Node.selectedNode = null;
             }
+
             ClosedPanel();
         }
         else

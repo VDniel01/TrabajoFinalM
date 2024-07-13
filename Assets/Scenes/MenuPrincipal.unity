@@ -3061,44 +3061,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4743bdbf6174d28409225dc4aacdb2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - timerPerCreation: 1
-    timerForNextWave: 10
-    counterToNextWavve: 0
-    enemigos:
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
-  - timerPerCreation: 0.7
-    timerForNextWave: 1
-    counterToNextWavve: 0
-    enemigos:
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
-    - {fileID: 6582850464689811135, guid: 34b42545e580fb44f825bd98dc94cee4, type: 3}
+  waves: []
   isWaitingForNextWave: 0
   wavesFinish: 0
   currentWave: 0
-  intPositon: {fileID: 1452518201}
+  intPositon: {fileID: 1055952485}
   counterText: {fileID: 753136121}
   buttonNextWave: {fileID: 403991156}
 --- !u!4 &867018776

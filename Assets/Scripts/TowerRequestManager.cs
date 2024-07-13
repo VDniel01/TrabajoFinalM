@@ -16,7 +16,7 @@ public class TowerRequestManager : MonoBehaviour
         }
         else
             Destroy(Instance);
-        
+
         anim = GetComponent<Animator>();
 
     }
@@ -25,6 +25,7 @@ public class TowerRequestManager : MonoBehaviour
     {
         anim.SetBool("IsOpen", true);
     }
+
     public void OnCloseRequestPanel()
     {
         anim.SetBool("IsOpen", false);
@@ -49,6 +50,10 @@ public class TowerRequestManager : MonoBehaviour
         OnCloseRequestPanel();
         Node.selectedNode.OnCloseSelection();
         Node.selectedNode = null;
-    }
 
+        if (!WaveManager.instance.isWaitingForNextWave && !WaveManager.instance.wavesFinish && WaveManager.instance.currentWave == 0)
+        {
+            WaveManager.instance.StartWaveProcess(); // Iniciar la primera oleada
+        }
+    }
 }
