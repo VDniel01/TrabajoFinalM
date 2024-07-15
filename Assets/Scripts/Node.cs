@@ -16,7 +16,27 @@ public class Node : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    private void OnMouseDown()
+    private void Update()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.transform == transform)
+                    {
+                        OnTouch();
+                    }
+                }
+            }
+        }
+    }
+
+    private void OnTouch()
     {
         if (selectedNode && selectedNode != this)
         {

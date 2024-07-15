@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2985470187120895135}
-  - component: {fileID: 6354906715894952140}
+  - component: {fileID: 4439256374021304363}
   m_Layer: 0
   m_Name: TowerFire
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3332794228549323877}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6354906715894952140
+--- !u!114 &4439256374021304363
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1333503437576230752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0bf8a0cfde09f04ab8caf0e67caa2f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 31d1bc695caac64469ce84c9d4233f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   towerName: Torre Fire
@@ -58,27 +58,28 @@ MonoBehaviour:
   currentTargets: []
   rotationPart: {fileID: 3332794228549323877}
   shootPosition: {fileID: 8741460796764786778}
-  bullet: {fileID: 1036043186298116792, guid: d4c79b72abbf84c46b9065a84893ead0, type: 3}
+  bullet: {fileID: 0}
   towerUpgradeData:
   - upgradePrice: 10
     buyPrice: 10
     sellPrice: 10
     range: 12
-    dmg: 30
+    dmg: 20
     timeToShoot: 1
   - upgradePrice: 20
     buyPrice: 20
     sellPrice: 20
     range: 14
-    dmg: 40
+    dmg: 25
     timeToShoot: 0.8
   - upgradePrice: 30
     buyPrice: 30
     sellPrice: 30
     range: 14
-    dmg: 50
+    dmg: 30
     timeToShoot: 0.8
   currentIndexUpgrade: 0
+  bulletFire: {fileID: 1036043186298116792, guid: d4c79b72abbf84c46b9065a84893ead0, type: 3}
 --- !u!1 &6390881812841748080
 GameObject:
   m_ObjectHideFlags: 0

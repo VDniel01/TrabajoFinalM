@@ -2,23 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletCold : Bullet
+public class BulletCold : MonoBehaviour
 {
-    public float slowDuration = 3f;
-    public float slowAmount = 0.5f; // Reduce speed to 50%
+    public float slowAmount = 0.5f;
+    public float duration = 3f;
+    public float speed = 10f;
+    private Transform target;
 
-    void Update()
+    public void SeekTarget(Transform _target)
     {
-        if (target != null)
+        target = _target;
+    }
+
+    private void Update()
+    {
+        if (target == null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, velocity * Time.deltaTime);
-            float distance = Vector3.Distance(transform.position, target.transform.position);
-            if (distance <= 0.1f)
-            {
-                target.TakeDamege(dmg);
-                target.ApplyColdEffect(slowAmount, slowDuration);
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
+            return;
         }
+
+        Vector3 dir = target.position - transform.position;
+        float distanceThisFrame = speed * Time.deltaTime;
+
+        if (dir.magnitude <= distanceThisFrame)
+        {
+            HitTarget();
+            return;
+        }
+
+        transform.Translate(dir.normalized * distanceThisFrame, Space.World);
+        transform.LookAt(target);
+    }
+
+    void HitTarget()
+    {
+        Enemigo enemigo = target.GetComponent<Enemigo>();
+        if (enemigo != null)
+        {
+            enemigo.ApplyColdEffect(slowAmount, duration);
+        }
+        Destroy(gameObject);
     }
 }

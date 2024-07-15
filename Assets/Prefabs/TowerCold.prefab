@@ -124,7 +124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 44797369696101998}
-  - component: {fileID: 809581793450645321}
+  - component: {fileID: 5078679858147582102}
   m_Layer: 0
   m_Name: TowerCold
   m_TagString: Untagged
@@ -148,7 +148,7 @@ Transform:
   - {fileID: 3068244886703605747}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &809581793450645321
+--- !u!114 &5078679858147582102
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6726040409882722195}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0bf8a0cfde09f04ab8caf0e67caa2f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 924c4c61a9f6d9f4db4c040984369326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   towerName: Torre Cold
@@ -167,33 +167,34 @@ MonoBehaviour:
     buyPrice: 10
     sellPrice: 10
     range: 10
-    dmg: 15
+    dmg: 60
     timeToShoot: 5
   currentTarget: {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
   currentTargets: []
   rotationPart: {fileID: 3068244886703605747}
   shootPosition: {fileID: 2394291421714426342}
-  bullet: {fileID: 1117083338020622992, guid: 42dd3f9adedd6de4784d57e5085bd9e5, type: 3}
+  bullet: {fileID: 0}
   towerUpgradeData:
   - upgradePrice: 10
     buyPrice: 10
     sellPrice: 10
     range: 12
-    dmg: 30
+    dmg: 60
     timeToShoot: 1
   - upgradePrice: 20
     buyPrice: 20
     sellPrice: 20
     range: 14
-    dmg: 40
+    dmg: 20
     timeToShoot: 0.8
   - upgradePrice: 30
     buyPrice: 30
     sellPrice: 30
     range: 14
-    dmg: 50
+    dmg: 25
     timeToShoot: 0.8
   currentIndexUpgrade: 0
+  bulletCold: {fileID: 1117083338020622992, guid: 42dd3f9adedd6de4784d57e5085bd9e5, type: 3}
 --- !u!1 &8569955025851312341
 GameObject:
   m_ObjectHideFlags: 0

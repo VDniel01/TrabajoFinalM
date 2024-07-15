@@ -23,8 +23,12 @@ public class Enemigo : MonoBehaviour
     [Header("Muerto")]
     public int MoneyOnDead = 10;
 
-    private Coroutine slowCoroutine;
-    private Coroutine burnCoroutine;
+    [Header("Daño al castillo")]
+    public float dañoAlCastillo = 50;
+    private Castillo castillo;
+
+    private Coroutine coldEffectCoroutine;
+    private Coroutine burnEffectCoroutine;
 
     private void Awake()
     {
@@ -50,6 +54,7 @@ public class Enemigo : MonoBehaviour
     {
         isDead = false; // Asegúrate de que el enemigo no esté muerto al inicio
         currentLife = maxLife;
+        castillo = GameObject.FindObjectOfType<Castillo>(); // Encuentra el castillo en la escena
     }
 
     private void maxWaypoint()
@@ -97,7 +102,7 @@ public class Enemigo : MonoBehaviour
             {
                 if (targetIndex >= waypoints.Count - 1)
                 {
-                    Debug.Log("Subir targetIndex");
+                    AtacarCastillo(); // Atacar al castillo al llegar al final del recorrido
                     return;
                 }
                 targetIndex++;
@@ -169,42 +174,51 @@ public class Enemigo : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void AtacarCastillo()
+    {
+        if (castillo != null)
+        {
+            castillo.RecibirDaño(dañoAlCastillo);
+        }
+        Destroy(gameObject);
+    }
+
     public void ApplyColdEffect(float slowAmount, float duration)
     {
-        if (slowCoroutine != null)
+        if (coldEffectCoroutine != null)
         {
-            StopCoroutine(slowCoroutine);
-            movementSpeed /= slowAmount; // Revertir el efecto previo antes de aplicar uno nuevo
+            StopCoroutine(coldEffectCoroutine);
         }
-        slowCoroutine = StartCoroutine(ApplySlowEffect(slowAmount, duration));
+        coldEffectCoroutine = StartCoroutine(ColdEffectCoroutine(slowAmount, duration));
     }
 
-    private IEnumerator ApplySlowEffect(float slowAmount, float duration)
+    private IEnumerator ColdEffectCoroutine(float slowAmount, float duration)
     {
+        float originalSpeed = movementSpeed;
         movementSpeed *= slowAmount;
         yield return new WaitForSeconds(duration);
-        movementSpeed /= slowAmount;
-        slowCoroutine = null;
+        movementSpeed = originalSpeed;
+        coldEffectCoroutine = null;
     }
 
-    public void ApplyBurnEffect(float burnDamagePerSecond, float duration)
+    public void ApplyBurnEffect(float burnDamage, float duration)
     {
-        if (burnCoroutine != null)
+        if (burnEffectCoroutine != null)
         {
-            StopCoroutine(burnCoroutine);
+            StopCoroutine(burnEffectCoroutine);
         }
-        burnCoroutine = StartCoroutine(ApplyBurnEffectCoroutine(burnDamagePerSecond, duration));
+        burnEffectCoroutine = StartCoroutine(BurnEffectCoroutine(burnDamage, duration));
     }
 
-    private IEnumerator ApplyBurnEffectCoroutine(float burnDamagePerSecond, float duration)
+    private IEnumerator BurnEffectCoroutine(float burnDamage, float duration)
     {
-        float elapsedTime = 0f;
-        while (elapsedTime < duration)
+        float elapsed = 0;
+        while (elapsed < duration)
         {
-            TakeDamege(burnDamagePerSecond * Time.deltaTime);
-            elapsedTime += Time.deltaTime;
+            TakeDamege(burnDamage * Time.deltaTime);
+            elapsed += Time.deltaTime;
             yield return null;
         }
-        burnCoroutine = null;
+        burnEffectCoroutine = null;
     }
 }
