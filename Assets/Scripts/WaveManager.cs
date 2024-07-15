@@ -37,10 +37,11 @@ public class WaveManager : MonoBehaviour
     private void Update()
     {
         CheckCounterAndShowButton();
-        CheckCounterForNExtWave();
+        CheckCounterForNextWave();
+        Castillo.instance.CheckForVictory(); // Verificar victoria en cada frame
     }
 
-    private void CheckCounterForNExtWave()
+    private void CheckCounterForNextWave()
     {
         if (isWaitingForNextWave && !wavesFinish)
         {
@@ -78,6 +79,7 @@ public class WaveManager : MonoBehaviour
         {
             Debug.Log("Nivel Terminado");
             wavesFinish = true;
+            Castillo.instance.CheckForVictory(); // Verificar victoria al final de la última ola
         }
     }
 
