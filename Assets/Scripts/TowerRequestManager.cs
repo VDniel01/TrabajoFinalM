@@ -8,6 +8,7 @@ public class TowerRequestManager : MonoBehaviour
     public List<Tower> towers = new List<Tower>();
     private Animator anim;
     public static TowerRequestManager Instance;
+
     private void Awake()
     {
         if (!Instance)
@@ -15,10 +16,11 @@ public class TowerRequestManager : MonoBehaviour
             Instance = this;
         }
         else
+        {
             Destroy(Instance);
+        }
 
         anim = GetComponent<Animator>();
-
     }
 
     public void OnOpenRequestPanel()

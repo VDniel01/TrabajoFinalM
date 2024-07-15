@@ -23,6 +23,8 @@ public class Enemigo : MonoBehaviour
     [Header("Muerto")]
     public int MoneyOnDead = 10;
 
+    private Coroutine slowCoroutine;
+    private Coroutine burnCoroutine;
 
     private void Awake()
     {
@@ -146,7 +148,7 @@ public class Enemigo : MonoBehaviour
     private void OnDead()
     {
         isDead = true;
-        anim.SetBool("TakeDamage", false);  
+        anim.SetBool("TakeDamage", false);
         anim.SetBool("Die", true);
         currentLife = 0;
         barraVidaimage.fillAmount = 0;
@@ -165,5 +167,44 @@ public class Enemigo : MonoBehaviour
             yield return null;
         }
         Destroy(gameObject);
+    }
+
+    public void ApplyColdEffect(float slowAmount, float duration)
+    {
+        if (slowCoroutine != null)
+        {
+            StopCoroutine(slowCoroutine);
+            movementSpeed /= slowAmount; // Revertir el efecto previo antes de aplicar uno nuevo
+        }
+        slowCoroutine = StartCoroutine(ApplySlowEffect(slowAmount, duration));
+    }
+
+    private IEnumerator ApplySlowEffect(float slowAmount, float duration)
+    {
+        movementSpeed *= slowAmount;
+        yield return new WaitForSeconds(duration);
+        movementSpeed /= slowAmount;
+        slowCoroutine = null;
+    }
+
+    public void ApplyBurnEffect(float burnDamagePerSecond, float duration)
+    {
+        if (burnCoroutine != null)
+        {
+            StopCoroutine(burnCoroutine);
+        }
+        burnCoroutine = StartCoroutine(ApplyBurnEffectCoroutine(burnDamagePerSecond, duration));
+    }
+
+    private IEnumerator ApplyBurnEffectCoroutine(float burnDamagePerSecond, float duration)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            TakeDamege(burnDamagePerSecond * Time.deltaTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        burnCoroutine = null;
     }
 }

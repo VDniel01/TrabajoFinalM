@@ -2,17 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class BulletFire : Bullet
 {
-    protected Enemigo target;
-    protected float dmg;
-    public float velocity = 90;
-
-    public void SetBullet(Enemigo target, float dmg)
-    {
-        this.target = target;
-        this.dmg = dmg;
-    }
+    public float burnDuration = 3f;
+    public float burnDamagePerSecond = 5f;
 
     void Update()
     {
@@ -23,6 +16,7 @@ public class Bullet : MonoBehaviour
             if (distance <= 0.1f)
             {
                 target.TakeDamege(dmg);
+                target.ApplyBurnEffect(burnDamagePerSecond, burnDuration);
                 Destroy(gameObject);
             }
         }

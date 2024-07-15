@@ -151,6 +151,7 @@ MonoBehaviour:
   maxLife: 200
   currentLife: 0
   barraVidaimage: {fileID: 4605796447720391610}
+  MoneyOnDead: 10
 --- !u!1 &2068668902329069841
 GameObject:
   m_ObjectHideFlags: 0

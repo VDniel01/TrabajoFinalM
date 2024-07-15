@@ -1286,8 +1286,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towers:
   - {fileID: 7956490197263316747, guid: 474e887e41680d84fbeb50b822b9266a, type: 3}
-  - {fileID: 8379870744508231237, guid: 4ef3f0c22d9e76842981f0f9e95100e6, type: 3}
-  - {fileID: 246058415890558269, guid: 1994ce82bf0ede94e82046b0b48e34c3, type: 3}
+  - {fileID: 809581793450645321, guid: 4ef3f0c22d9e76842981f0f9e95100e6, type: 3}
+  - {fileID: 6354906715894952140, guid: 1994ce82bf0ede94e82046b0b48e34c3, type: 3}
 --- !u!95 &400322927
 Animator:
   serializedVersion: 5
@@ -3061,7 +3061,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4743bdbf6174d28409225dc4aacdb2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves: []
+  waves:
+  - timerPerCreation: 5
+    timerForNextWave: 20
+    counterToNextWavve: 0
+    enemigos:
+    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
+    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
+  - timerPerCreation: 0.8
+    timerForNextWave: 10
+    counterToNextWavve: 0
+    enemigos:
+    - {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
   isWaitingForNextWave: 0
   wavesFinish: 0
   currentWave: 0

@@ -148,10 +148,11 @@ MonoBehaviour:
   waypoints: []
   movementSpeed: 4
   rotationSpeed: 6
-  isDead: 0
+  isDead: 1
   maxLife: 100
   currentLife: 0
   barraVidaimage: {fileID: 4605796447720391610}
+  MoneyOnDead: 10
 --- !u!65 &4429578726171295887
 BoxCollider:
   m_ObjectHideFlags: 0

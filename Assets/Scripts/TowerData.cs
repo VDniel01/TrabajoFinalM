@@ -14,7 +14,4 @@ public class TowerData
     public float range = 10;
     public float dmg = 20;
     public float timeToShoot = 1;
-
-
-    
 }

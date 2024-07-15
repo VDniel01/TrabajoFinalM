@@ -37,7 +37,6 @@ public class PlayerData : MonoBehaviour
     public void AddMoney(int amount)
     {
         money += amount;
-        Debug.Log("Dinero añadido: " + amount + ". Dinero total: " + money);
-        UIPlayer.instance.UpdateMoneyTexto(money.ToString()); // Asegúrate de que la UI se actualice aquí
+        UIPlayer.instance.UpdateMoneyTexto(money.ToString());
     }
 }
