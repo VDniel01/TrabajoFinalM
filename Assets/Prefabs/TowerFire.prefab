@@ -79,7 +79,7 @@ MonoBehaviour:
     dmg: 30
     timeToShoot: 0.8
   currentIndexUpgrade: 0
-  bulletFire: {fileID: 1036043186298116792, guid: d4c79b72abbf84c46b9065a84893ead0, type: 3}
+  bulletPrefab: {fileID: 9131816265490438869, guid: d4c79b72abbf84c46b9065a84893ead0, type: 3}
 --- !u!1 &6390881812841748080
 GameObject:
   m_ObjectHideFlags: 0

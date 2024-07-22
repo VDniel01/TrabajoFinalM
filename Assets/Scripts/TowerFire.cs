@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TowerFire : Tower
 {
-    public BulletFire bulletFire; // Usamos BulletFire en lugar de Bullet
+    public GameObject bulletPrefab; // Prefab de la bala para el pool
 
     private void Start()
     {
@@ -72,10 +72,17 @@ public class TowerFire : Tower
 
     private void Shoot()
     {
-        if (bulletFire != null && shootPosition != null)
+        if (bulletPrefab != null && shootPosition != null)
         {
-            var bulletInstance = Instantiate(bulletFire, shootPosition.position, shootPosition.rotation);
-            bulletInstance.SeekTarget(currentTarget.transform);
+            GameObject bulletInstance = ObjectPool.Instance.GetObject();
+            bulletInstance.transform.position = shootPosition.position;
+            bulletInstance.transform.rotation = shootPosition.rotation;
+
+            BulletFire bullet = bulletInstance.GetComponent<BulletFire>();
+            if (bullet != null)
+            {
+                bullet.SeekTarget(currentTarget.transform);
+            }
         }
     }
 

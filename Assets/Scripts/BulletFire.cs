@@ -6,7 +6,7 @@ public class BulletFire : MonoBehaviour
 {
     public float burnDamage = 10f;
     public float duration = 3f;
-    public float speed = 10f; // Añadimos la variable speed
+    public float speed = 10f; // Velocidad de la bala
     private Transform target;
 
     public void SeekTarget(Transform _target)
@@ -18,7 +18,7 @@ public class BulletFire : MonoBehaviour
     {
         if (target == null)
         {
-            Destroy(gameObject);
+            ReturnToPool();
             return;
         }
 
@@ -42,6 +42,11 @@ public class BulletFire : MonoBehaviour
         {
             enemigo.ApplyBurnEffect(burnDamage, duration);
         }
-        Destroy(gameObject);
+        ReturnToPool();
+    }
+
+    void ReturnToPool()
+    {
+        ObjectPool.Instance.ReturnObject(gameObject);
     }
 }
