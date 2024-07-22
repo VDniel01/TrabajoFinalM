@@ -11,13 +11,14 @@ public class TowerRequestManager : MonoBehaviour
 
     private void Awake()
     {
-        if (!Instance)
+        if (Instance == null)
         {
             Instance = this;
         }
         else
         {
-            Destroy(Instance);
+            Destroy(gameObject);
+            return;
         }
 
         anim = GetComponent<Animator>();
@@ -42,7 +43,7 @@ public class TowerRequestManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("no tenemos nada vieja... tamos pobre" + towerName);
+            Debug.Log("No tenemos suficiente dinero para comprar " + towerName);
             return;
         }
 

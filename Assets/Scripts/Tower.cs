@@ -37,7 +37,7 @@ public class Tower : MonoBehaviour
 
     }
 
-    protected void EnemyDetection()
+    public virtual void EnemyDetection()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, CurrendData.range);
         currentTargets = hitColliders
@@ -57,7 +57,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    protected void LookRotation()
+    public virtual void LookRotation()
     {
         if (currentTarget != null)
         {
@@ -68,7 +68,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    protected IEnumerator ShootTimer()
+    public virtual IEnumerator ShootTimer()
     {
         while (true)
         {

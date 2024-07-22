@@ -23,7 +23,7 @@ public class TowerFire : Tower
         UIpanelManager.instance.OpenPanel(this); // Ahora this es de tipo TowerFire, que hereda de Tower
     }
 
-    protected new void EnemyDetection()
+    public override void EnemyDetection()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, CurrendData.range);
         currentTargets = hitColliders
@@ -43,7 +43,7 @@ public class TowerFire : Tower
         }
     }
 
-    protected new void LookRotation()
+    public override void LookRotation()
     {
         if (currentTarget != null)
         {
@@ -54,7 +54,7 @@ public class TowerFire : Tower
         }
     }
 
-    protected new IEnumerator ShootTimer()
+    public override IEnumerator ShootTimer()
     {
         while (true)
         {
@@ -70,7 +70,7 @@ public class TowerFire : Tower
         }
     }
 
-    private new void Shoot()
+    private void Shoot()
     {
         if (bulletFire != null && shootPosition != null)
         {

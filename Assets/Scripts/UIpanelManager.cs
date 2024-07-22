@@ -27,7 +27,7 @@ public class UIpanelManager : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 
@@ -83,7 +83,7 @@ public class UIpanelManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("plata... ... ... no tenemos");
+            Debug.Log("No tenemos suficiente dinero para mejorar");
         }
     }
 

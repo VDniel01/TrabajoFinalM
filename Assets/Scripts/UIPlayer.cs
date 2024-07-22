@@ -24,6 +24,4 @@ public class UIPlayer : MonoBehaviour
     {
         MoneyTxt.text = "$ " + value;
     }
-
-
 }
