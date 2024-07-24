@@ -86,7 +86,8 @@ GameObject:
   - component: {fileID: 3049993103823064009}
   - component: {fileID: 611699262181996976}
   - component: {fileID: 6582850464689811135}
-  - component: {fileID: 4429578726171295887}
+  - component: {fileID: -2391297834607067007}
+  - component: {fileID: 4247585772408914822}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -153,8 +154,35 @@ MonoBehaviour:
   currentLife: 0
   barraVidaimage: {fileID: 4605796447720391610}
   MoneyOnDead: 10
-  "da\xF1oAlCastillo": 1000
---- !u!65 &4429578726171295887
+  "da\xF1oAlCastillo": 100
+--- !u!54 &-2391297834607067007
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590848953324450553}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 4
+  m_CollisionDetection: 0
+--- !u!65 &4247585772408914822
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,8 +201,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 2.2833486, z: 1}
+  m_Center: {x: 0, y: 0.9387524, z: 0}
 --- !u!1 &2068668902329069841
 GameObject:
   m_ObjectHideFlags: 0

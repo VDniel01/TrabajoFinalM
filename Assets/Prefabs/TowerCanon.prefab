@@ -52,7 +52,7 @@ MonoBehaviour:
     buyPrice: 10
     sellPrice: 10
     range: 10
-    dmg: 20
+    dmg: 10
     timeToShoot: 1
   currentTarget: {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
   currentTargets: []

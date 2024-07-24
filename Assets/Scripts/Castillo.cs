@@ -35,6 +35,7 @@ public class Castillo : MonoBehaviour
     public void RecibirDaño(float daño)
     {
         vidaActual -= daño;
+        Vibration.Vibrate(500); // Vibrar por 500 milisegundos cuando el castillo recibe daño
         if (vidaActual <= 0)
         {
             vidaActual = 0;
@@ -86,5 +87,14 @@ public class Castillo : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("SampleScene"); // Cambia esto al nombre de tu menú principal
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Enemigo enemigo = other.GetComponent<Enemigo>();
+        if (enemigo != null)
+        {
+            RecibirDaño(enemigo.dañoAlCastillo); // Usar dañoAlCastillo en lugar de damage
+        }
     }
 }
