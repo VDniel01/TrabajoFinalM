@@ -162,37 +162,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: Torre Cold
   towerDescription: realentiza al enemigo
-  CurrendData:
-    upgradePrice: 10
-    buyPrice: 10
-    sellPrice: 10
-    range: 10
-    dmg: 60
-    timeToShoot: 5
+  CurrendData: {fileID: 11400000, guid: 6e8b9c62cce7a99488a4755180ba1dbd, type: 2}
   currentTarget: {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
   currentTargets: []
   rotationPart: {fileID: 3068244886703605747}
   shootPosition: {fileID: 2394291421714426342}
   bullet: {fileID: 0}
   towerUpgradeData:
-  - upgradePrice: 10
-    buyPrice: 10
-    sellPrice: 10
-    range: 12
-    dmg: 60
-    timeToShoot: 1
-  - upgradePrice: 20
-    buyPrice: 20
-    sellPrice: 20
-    range: 14
-    dmg: 20
-    timeToShoot: 0.8
-  - upgradePrice: 30
-    buyPrice: 30
-    sellPrice: 30
-    range: 14
-    dmg: 25
-    timeToShoot: 0.8
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   currentIndexUpgrade: 0
   bulletCold: {fileID: 1117083338020622992, guid: 42dd3f9adedd6de4784d57e5085bd9e5, type: 3}
 --- !u!1 &8569955025851312341

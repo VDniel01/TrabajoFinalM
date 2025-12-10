@@ -47,37 +47,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: Torre Fire
   towerDescription: una bonita torre
-  CurrendData:
-    upgradePrice: 10
-    buyPrice: 10
-    sellPrice: 10
-    range: 10
-    dmg: 10
-    timeToShoot: 4
+  CurrendData: {fileID: 11400000, guid: 07c85fb3ddf49824da36263528d01152, type: 2}
   currentTarget: {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
   currentTargets: []
   rotationPart: {fileID: 3332794228549323877}
   shootPosition: {fileID: 8741460796764786778}
   bullet: {fileID: 0}
   towerUpgradeData:
-  - upgradePrice: 10
-    buyPrice: 10
-    sellPrice: 10
-    range: 12
-    dmg: 20
-    timeToShoot: 1
-  - upgradePrice: 20
-    buyPrice: 20
-    sellPrice: 20
-    range: 14
-    dmg: 25
-    timeToShoot: 0.8
-  - upgradePrice: 30
-    buyPrice: 30
-    sellPrice: 30
-    range: 14
-    dmg: 30
-    timeToShoot: 0.8
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   currentIndexUpgrade: 0
   bulletPrefab: {fileID: 9131816265490438869, guid: d4c79b72abbf84c46b9065a84893ead0, type: 3}
 --- !u!1 &6390881812841748080

@@ -1,17 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-    
-[System.Serializable]
-public class TowerData 
+
+[CreateAssetMenu(fileName = "NewTowerData", menuName = "Tower Defense/Tower Data")]
+public class TowerData : ScriptableObject
 {
-    [Header("Price")]
-    public int upgradePrice;
+    [Header("Info")]
+    public string dataName = "Nivel 1";
+
+    [Header("Economy")]
     public int buyPrice = 10;
+    public int upgradePrice = 50;
     public int sellPrice = 8;
 
-    [Header("TowerSetting")]
-    public float range = 10;
-    public float dmg = 20;
-    public float timeToShoot = 1;
+    [Header("Combat Stats")]
+    public float range = 10f;
+    public float dmg = 20f;
+    public float timeToShoot = 1f;
+
+    [Header("Audio")] // --- NUEVO ---
+    public AudioClip shootSound; // Arrastra aquí el sonido del disparo
 }

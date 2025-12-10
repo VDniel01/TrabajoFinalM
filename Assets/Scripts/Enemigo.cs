@@ -9,6 +9,7 @@ public class Enemigo : MonoBehaviour
     public List<Transform> waypoints = new List<Transform>();
     private int targetIndex = 1;
     public float movementSpeed = 4;
+    private float baseSpeed; // NUEVO: Para recordar la velocidad original real
     public float rotationSpeed = 6;
     private Animator anim;
 
@@ -35,6 +36,16 @@ public class Enemigo : MonoBehaviour
         canvasRoot = barraVidaimage?.transform.parent.parent;
         intilLifeRotatoin = canvasRoot?.rotation ?? Quaternion.identity;
         anim = GetComponent<Animator>();
+
+        // Corrección de físicas (Bug anterior)
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody>();
+        }
+        rb.isKinematic = true;
+        rb.useGravity = false;
+
         if (GetComponent<Collider>() == null)
         {
             gameObject.AddComponent<BoxCollider>();
@@ -52,9 +63,10 @@ public class Enemigo : MonoBehaviour
 
     private void Start()
     {
-        isDead = false; // Asegúrate de que el enemigo no esté muerto al inicio
+        isDead = false;
         currentLife = maxLife;
-        castillo = GameObject.FindObjectOfType<Castillo>(); // Encuentra el castillo en la escena
+        baseSpeed = movementSpeed; // GUARDAMOS LA VELOCIDAD ORIGINAL AQUÍ
+        castillo = GameObject.FindObjectOfType<Castillo>();
     }
 
     private void maxWaypoint()
@@ -80,7 +92,7 @@ public class Enemigo : MonoBehaviour
         {
             canvasRoot.transform.rotation = intilLifeRotatoin;
         }
-        if (!isDead) // Solo mover si no está muerto
+        if (!isDead)
         {
             Movement();
             LookAt();
@@ -90,10 +102,8 @@ public class Enemigo : MonoBehaviour
     #region Movimiento y Rotaciones
     private void Movement()
     {
-        if (isDead)
-        {
-            return;
-        }
+        if (isDead) return;
+
         if (waypoints.Count > 0)
         {
             transform.position = Vector3.MoveTowards(transform.position, waypoints[targetIndex].position, movementSpeed * Time.deltaTime);
@@ -102,7 +112,7 @@ public class Enemigo : MonoBehaviour
             {
                 if (targetIndex >= waypoints.Count - 1)
                 {
-                    AtacarCastillo(); // Atacar al castillo al llegar al final del recorrido
+                    AtacarCastillo();
                     return;
                 }
                 targetIndex++;
@@ -112,10 +122,8 @@ public class Enemigo : MonoBehaviour
 
     private void LookAt()
     {
-        if (isDead)
-        {
-            return;
-        }
+        if (isDead) return;
+
         if (waypoints.Count > 0)
         {
             var dir = waypoints[targetIndex].position - transform.position;
@@ -128,10 +136,8 @@ public class Enemigo : MonoBehaviour
     public void TakeDamege(float dmg)
     {
         var newLife = currentLife - dmg;
-        if (isDead)
-        {
-            return;
-        }
+        if (isDead) return;
+
         if (newLife <= 0)
         {
             OnDead();
@@ -183,8 +189,10 @@ public class Enemigo : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // --- CORRECCIÓN DEL HIELO ---
     public void ApplyColdEffect(float slowAmount, float duration)
     {
+        // Si ya está congelado, reiniciamos el contador (paramos la corrutina anterior)
         if (coldEffectCoroutine != null)
         {
             StopCoroutine(coldEffectCoroutine);
@@ -194,12 +202,19 @@ public class Enemigo : MonoBehaviour
 
     private IEnumerator ColdEffectCoroutine(float slowAmount, float duration)
     {
-        float originalSpeed = movementSpeed;
-        movementSpeed *= slowAmount;
+        // ERROR ANTERIOR: movementSpeed *= slowAmount; (Esto acumulaba el efecto infinitamente)
+
+        // CORRECCIÓN: Siempre calculamos en base a la velocidad BASE original
+        movementSpeed = baseSpeed * slowAmount;
+
         yield return new WaitForSeconds(duration);
-        movementSpeed = originalSpeed;
+
+        // Al terminar, volvemos a la velocidad BASE, no a una variable guardada temporalmente
+        movementSpeed = baseSpeed;
+
         coldEffectCoroutine = null;
     }
+    // ----------------------------
 
     public void ApplyBurnEffect(float burnDamage, float duration)
     {

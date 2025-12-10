@@ -7,6 +7,10 @@ public class BulletCold : MonoBehaviour
     public float slowAmount = 0.5f;
     public float duration = 3f;
     public float speed = 10f;
+
+    [Header("Visual Effects")]
+    public GameObject hitEffect; // ARRASTRA AQUÍ TU PREFAB DE HIELO
+
     private Transform target;
 
     public void SeekTarget(Transform _target)
@@ -18,7 +22,7 @@ public class BulletCold : MonoBehaviour
     {
         if (target == null)
         {
-            Destroy(gameObject);
+            ObjectPool.Instance.ReturnObject(gameObject);
             return;
         }
 
@@ -42,6 +46,16 @@ public class BulletCold : MonoBehaviour
         {
             enemigo.ApplyColdEffect(slowAmount, duration);
         }
-        Destroy(gameObject);
+
+        // --- NUEVO: Spawnear Efecto Visual ---
+        if (hitEffect != null)
+        {
+            GameObject effectInstance = ObjectPool.Instance.GetObject(hitEffect);
+            effectInstance.transform.position = transform.position;
+            effectInstance.transform.rotation = transform.rotation;
+        }
+        // -------------------------------------
+
+        ObjectPool.Instance.ReturnObject(gameObject);
     }
 }

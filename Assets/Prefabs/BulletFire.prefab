@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b76614b96591464298fee11da40847f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 50
-  burnDuration: 4
-  burnDamagePerSecond: 5
+  burnDamage: 10
+  duration: 3
+  speed: 10
+  hitEffect: {fileID: 1306499859925766580, guid: c59c3eb29f0e86e40a2bd2d1c74aef1b, type: 3}

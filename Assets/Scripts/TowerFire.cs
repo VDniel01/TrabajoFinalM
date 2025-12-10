@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TowerFire : Tower
 {
-    public GameObject bulletPrefab; // Prefab de la bala para el pool
+    public GameObject bulletPrefab;
 
     private void Start()
     {
@@ -20,7 +20,7 @@ public class TowerFire : Tower
 
     private void OnMouseDown()
     {
-        UIpanelManager.instance.OpenPanel(this); // Ahora this es de tipo TowerFire, que hereda de Tower
+        UIpanelManager.instance.OpenPanel(this);
     }
 
     public override void EnemyDetection()
@@ -34,12 +34,10 @@ public class TowerFire : Tower
         if (currentTargets.Count > 0)
         {
             currentTarget = currentTargets[0];
-            Debug.Log("Enemigo detectado: " + currentTarget.name);
         }
         else
         {
             currentTarget = null;
-            Debug.Log("No se detectaron enemigos.");
         }
     }
 
@@ -56,6 +54,10 @@ public class TowerFire : Tower
 
     public override IEnumerator ShootTimer()
     {
+        // --- CORRECCIÓN: Espera inicial para evitar disparo instantáneo ---
+        yield return new WaitForSeconds(0.5f);
+        // ---------------------------------------------------------------
+
         while (true)
         {
             if (currentTarget != null)
@@ -74,7 +76,7 @@ public class TowerFire : Tower
     {
         if (bulletPrefab != null && shootPosition != null)
         {
-            GameObject bulletInstance = ObjectPool.Instance.GetObject();
+            GameObject bulletInstance = ObjectPool.Instance.GetObject(bulletPrefab);
             bulletInstance.transform.position = shootPosition.position;
             bulletInstance.transform.rotation = shootPosition.rotation;
 

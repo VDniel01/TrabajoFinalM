@@ -47,37 +47,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: Torre Canon
   towerDescription: disparo normal jeje god
-  CurrendData:
-    upgradePrice: 10
-    buyPrice: 10
-    sellPrice: 10
-    range: 10
-    dmg: 10
-    timeToShoot: 1
+  CurrendData: {fileID: 11400000, guid: 8f3ea77eacce8b049a7a7a500a60ff22, type: 2}
   currentTarget: {fileID: 6582850464689811135, guid: dd2b6b13fda97f54ca0b37d6e58035bf, type: 3}
   currentTargets: []
   rotationPart: {fileID: 2055132699788151161}
   shootPosition: {fileID: 6410854121209147427}
   bullet: {fileID: 5269393100948767772, guid: 7764549f0690d964880fc5d584593120, type: 3}
   towerUpgradeData:
-  - upgradePrice: 10
-    buyPrice: 10
-    sellPrice: 10
-    range: 12
-    dmg: 30
-    timeToShoot: 1
-  - upgradePrice: 20
-    buyPrice: 20
-    sellPrice: 20
-    range: 14
-    dmg: 40
-    timeToShoot: 0.8
-  - upgradePrice: 30
-    buyPrice: 30
-    sellPrice: 30
-    range: 14
-    dmg: 50
-    timeToShoot: 0.8
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   currentIndexUpgrade: 0
 --- !u!1 &3740160484012562852
 GameObject:

@@ -7,10 +7,9 @@ public class ObjectPool : MonoBehaviour
     public static ObjectPool Instance; // Instancia estática para acceso global
 
     [Header("Pool Settings")]
-    public GameObject objectPrefab; // Prefab del objeto a ser "pooling"
-    public int poolSize = 10; // Tamaño inicial del pool
-
-    private Queue<GameObject> poolQueue = new Queue<GameObject>();
+    // Ya no necesitamos un "objectPrefab" único aquí, porque lo pediremos dinámicamente.
+    // Usamos un Diccionario: Clave (Nombre del prefab) -> Valor (Cola de objetos)
+    private Dictionary<string, Queue<GameObject>> pools = new Dictionary<string, Queue<GameObject>>();
 
     private void Awake()
     {
@@ -23,40 +22,49 @@ public class ObjectPool : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        // Inicializar el pool
-        InitializePool();
     }
 
-    private void InitializePool()
+    // Modificado: Ahora recibe el prefab que queremos spawnear
+    public GameObject GetObject(GameObject prefab)
     {
-        for (int i = 0; i < poolSize; i++)
+        string key = prefab.name; // La clave es el nombre del prefab
+
+        // Si no existe el pool para este objeto, lo creamos
+        if (!pools.ContainsKey(key))
         {
-            GameObject obj = Instantiate(objectPrefab);
-            obj.SetActive(false); // El objeto no está activo al inicio
-            poolQueue.Enqueue(obj);
+            pools[key] = new Queue<GameObject>();
         }
-    }
 
-    public GameObject GetObject()
-    {
-        if (poolQueue.Count > 0)
+        if (pools[key].Count > 0)
         {
-            GameObject obj = poolQueue.Dequeue();
+            GameObject obj = pools[key].Dequeue();
             obj.SetActive(true);
             return obj;
         }
         else
         {
-            // Opcionalmente puedes crear más objetos si el pool está vacío
-            GameObject obj = Instantiate(objectPrefab);
+            // Si no hay objetos disponibles, instanciamos uno nuevo
+            GameObject obj = Instantiate(prefab);
+            obj.name = key; // IMPORTANTE: Le quitamos el "(Clone)" para que el nombre coincida con la clave al devolverlo
             return obj;
         }
     }
 
     public void ReturnObject(GameObject obj)
     {
+        string key = obj.name; // Usamos el nombre del objeto para saber a qué cola devolverlo
+
         obj.SetActive(false);
-        poolQueue.Enqueue(obj);
+
+        if (pools.ContainsKey(key))
+        {
+            pools[key].Enqueue(obj);
+        }
+        else
+        {
+            // Si intentamos devolver un objeto que no se creó mediante el pool, lo destruimos por seguridad
+            Debug.LogWarning("El objeto " + key + " no pertenece a ningún pool registrado.");
+            Destroy(obj);
+        }
     }
 }

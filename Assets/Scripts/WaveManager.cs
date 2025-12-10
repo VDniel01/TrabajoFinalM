@@ -6,16 +6,22 @@ using UnityEngine.UI;
 
 public class WaveManager : MonoBehaviour
 {
-    public static WaveManager instance; // Añadimos una instancia estática
+    public static WaveManager instance;
 
+    [Header("Configuración de Oleadas")]
     public List<WaveObject> waves = new List<WaveObject>();
+    public Transform intPositon; // Punto de spawn
+
+    [Header("Estado del Juego")]
     public bool isWaitingForNextWave;
     public bool wavesFinish;
     public int currentWave;
-    public Transform intPositon;
+    private bool levelHasStarted = false; // Nueva variable para saber si ya dimos "Start"
 
+    [Header("UI References")]
     public TextMeshProUGUI counterText;
     public GameObject buttonNextWave;
+    public GameObject startLevelButton; // ¡Nuevo botón para asignar en el Inspector!
 
     private void Awake()
     {
@@ -31,22 +37,47 @@ public class WaveManager : MonoBehaviour
 
     private void Start()
     {
-        // Quitamos el llamado a StartCoroutine(ProcesWave()); para iniciar las oleadas con la primera torre
+        // Al inicio, aseguramos que el botón de Start esté activo y el de Next Wave oculto
+        if (startLevelButton != null)
+            startLevelButton.SetActive(true);
+
+        if (buttonNextWave != null)
+            buttonNextWave.SetActive(false);
+
+        if (counterText != null)
+            counterText.gameObject.SetActive(false);
     }
 
     private void Update()
     {
         CheckCounterAndShowButton();
         CheckCounterForNextWave();
-        Castillo.instance.CheckForVictory(); // Verificar victoria en cada frame
+        Castillo.instance.CheckForVictory();
+    }
+
+    // --- NUEVA FUNCIÓN: Conectar esto al botón "Start Level" en Unity ---
+    public void StartLevel()
+    {
+        if (levelHasStarted) return; // Evitar doble click
+
+        levelHasStarted = true;
+
+        if (startLevelButton != null)
+            startLevelButton.SetActive(false); // Ocultamos el botón de inicio
+
+        StartCoroutine(ProcesWave()); // Iniciamos la primera oleada
     }
 
     private void CheckCounterForNextWave()
     {
-        if (isWaitingForNextWave && !wavesFinish)
+        // Solo contamos si el nivel ya empezó
+        if (levelHasStarted && isWaitingForNextWave && !wavesFinish)
         {
             waves[currentWave].counterToNextWavve -= 1 * Time.deltaTime;
-            counterText.text = waves[currentWave].counterToNextWavve.ToString("00");
+
+            if (counterText != null)
+                counterText.text = waves[currentWave].counterToNextWavve.ToString("00");
+
             if (waves[currentWave].counterToNextWavve <= 0)
             {
                 ChangeWave();
@@ -67,34 +98,39 @@ public class WaveManager : MonoBehaviour
     {
         if (wavesFinish)
             yield break;
+
         isWaitingForNextWave = false;
+
+        // Ocultamos texto y botón mientras salen enemigos
+        if (counterText != null) counterText.gameObject.SetActive(false);
+        if (buttonNextWave != null) buttonNextWave.SetActive(false);
+
         waves[currentWave].counterToNextWavve = waves[currentWave].timerForNextWave;
+
         for (int i = 0; i < waves[currentWave].enemigos.Count; i++)
         {
             var eneMyGo = Instantiate(waves[currentWave].enemigos[i], intPositon.position, intPositon.rotation);
             yield return new WaitForSeconds(waves[currentWave].timerPerCreation);
         }
+
         isWaitingForNextWave = true;
+
         if (currentWave >= waves.Count - 1)
         {
             Debug.Log("Nivel Terminado");
             wavesFinish = true;
-            Castillo.instance.CheckForVictory(); // Verificar victoria al final de la última ola
+            Castillo.instance.CheckForVictory();
         }
     }
 
     private void CheckCounterAndShowButton()
     {
-        if (!wavesFinish)
+        // Solo mostramos la UI de "Siguiente Oleada" si el nivel YA empezó
+        if (levelHasStarted && !wavesFinish)
         {
-            buttonNextWave.SetActive(isWaitingForNextWave);
-            counterText.gameObject.SetActive(isWaitingForNextWave);
+            if (buttonNextWave != null) buttonNextWave.SetActive(isWaitingForNextWave);
+            if (counterText != null) counterText.gameObject.SetActive(isWaitingForNextWave);
         }
-    }
-
-    public void StartWaveProcess() // Método para iniciar el proceso de oleadas
-    {
-        StartCoroutine(ProcesWave());
     }
 
     [System.Serializable]

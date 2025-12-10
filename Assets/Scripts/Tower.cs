@@ -39,6 +39,9 @@ public class Tower : MonoBehaviour
 
     public virtual void EnemyDetection()
     {
+        // Protección: Si no hay datos, no hacemos nada para evitar errores
+        if (CurrendData == null) return;
+
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, CurrendData.range);
         currentTargets = hitColliders
             .Select(hitCollider => hitCollider.GetComponent<Enemigo>())
@@ -48,12 +51,11 @@ public class Tower : MonoBehaviour
         if (currentTargets.Count > 0)
         {
             currentTarget = currentTargets[0];
-            Debug.Log("Enemigo detectado: " + currentTarget.name);
+            // Debug.Log("Enemigo detectado: " + currentTarget.name); // Comentado para limpiar la consola
         }
         else
         {
             currentTarget = null;
-            Debug.Log("No se detectaron enemigos.");
         }
     }
 
@@ -70,9 +72,19 @@ public class Tower : MonoBehaviour
 
     public virtual IEnumerator ShootTimer()
     {
+        // --- CORRECCIÓN: Espera inicial de 0.5 segundos ---
+        // Esto evita el disparo instantáneo al colocar la torre
+        yield return new WaitForSeconds(0.5f);
+        // --------------------------------------------------
+
         while (true)
         {
-            if (currentTarget != null)
+            if (CurrendData == null)
+            {
+                Debug.LogWarning("La torre " + gameObject.name + " no tiene Datos (ScriptableObject) asignados.");
+                yield return null;
+            }
+            else if (currentTarget != null)
             {
                 Shoot();
                 yield return new WaitForSeconds(CurrendData.timeToShoot);
@@ -89,13 +101,17 @@ public class Tower : MonoBehaviour
         if (bullet != null && shootPosition != null)
         {
             var bulletInstance = Instantiate(bullet, shootPosition.position, shootPosition.rotation);
+            // Aseguramos que la bala sepa cuánto daño hacer según los datos actuales de la torre
             bulletInstance.SetBullet(currentTarget, CurrendData.dmg);
         }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, CurrendData.range);
+        if (CurrendData != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, CurrendData.range);
+        }
     }
 }

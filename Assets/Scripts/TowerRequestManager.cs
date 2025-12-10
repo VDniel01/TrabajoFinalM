@@ -37,6 +37,8 @@ public class TowerRequestManager : MonoBehaviour
     public void RequestTowerBuy(string towerName)
     {
         var tower = towers.Find(x => x.towerName == towerName);
+
+        // Verificamos si tenemos dinero
         if (tower.CurrendData.buyPrice <= PlayerData.instance.money)
         {
             PlayerData.instance.TakeMoney(tower.CurrendData.buyPrice);
@@ -47,16 +49,18 @@ public class TowerRequestManager : MonoBehaviour
             return;
         }
 
+        // Instanciamos la torre
         var towerGo = Instantiate(tower, Node.selectedNode.transform.position, tower.transform.rotation);
+
+        // Configuramos el nodo
         Node.selectedNode.towerOcuped = towerGo;
         Node.selectedNode.isOcupado = true;
+
+        // Cerramos paneles y limpiamos selección
         OnCloseRequestPanel();
         Node.selectedNode.OnCloseSelection();
         Node.selectedNode = null;
 
-        if (!WaveManager.instance.isWaitingForNextWave && !WaveManager.instance.wavesFinish && WaveManager.instance.currentWave == 0)
-        {
-            WaveManager.instance.StartWaveProcess(); // Iniciar la primera oleada
-        }
+        // ELIMINADO: Ya no iniciamos la oleada automáticamente aquí.
     }
 }

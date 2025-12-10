@@ -6,7 +6,11 @@ public class BulletFire : MonoBehaviour
 {
     public float burnDamage = 10f;
     public float duration = 3f;
-    public float speed = 10f; // Velocidad de la bala
+    public float speed = 10f;
+
+    [Header("Visual Effects")]
+    public GameObject hitEffect; // ARRASTRA AQUÍ TU PREFAB DE EXPLOSIÓN
+
     private Transform target;
 
     public void SeekTarget(Transform _target)
@@ -18,7 +22,7 @@ public class BulletFire : MonoBehaviour
     {
         if (target == null)
         {
-            ReturnToPool();
+            ObjectPool.Instance.ReturnObject(gameObject);
             return;
         }
 
@@ -42,11 +46,16 @@ public class BulletFire : MonoBehaviour
         {
             enemigo.ApplyBurnEffect(burnDamage, duration);
         }
-        ReturnToPool();
-    }
 
-    void ReturnToPool()
-    {
+        // --- NUEVO: Spawnear Efecto Visual ---
+        if (hitEffect != null)
+        {
+            GameObject effectInstance = ObjectPool.Instance.GetObject(hitEffect);
+            effectInstance.transform.position = transform.position;
+            effectInstance.transform.rotation = transform.rotation;
+        }
+        // -------------------------------------
+
         ObjectPool.Instance.ReturnObject(gameObject);
     }
 }
