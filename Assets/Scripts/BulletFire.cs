@@ -8,8 +8,9 @@ public class BulletFire : MonoBehaviour
     public float duration = 3f;
     public float speed = 10f;
 
-    [Header("Visual Effects")]
-    public GameObject hitEffect; // ARRASTRA AQUÍ TU PREFAB DE EXPLOSIÓN
+    [Header("Visual & Audio")]
+    public GameObject hitEffect; // Prefab de Partícula
+    public AudioClip impactSound; // --- NUEVO: Sonido Impacto ---
 
     private Transform target;
 
@@ -47,14 +48,19 @@ public class BulletFire : MonoBehaviour
             enemigo.ApplyBurnEffect(burnDamage, duration);
         }
 
-        // --- NUEVO: Spawnear Efecto Visual ---
+        // --- NUEVO: Sonido ---
+        if (impactSound != null)
+        {
+            AudioSource.PlayClipAtPoint(impactSound, transform.position);
+        }
+
+        // Efecto visual
         if (hitEffect != null)
         {
             GameObject effectInstance = ObjectPool.Instance.GetObject(hitEffect);
             effectInstance.transform.position = transform.position;
             effectInstance.transform.rotation = transform.rotation;
         }
-        // -------------------------------------
 
         ObjectPool.Instance.ReturnObject(gameObject);
     }

@@ -8,6 +8,7 @@ public class TowerCold : Tower
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         StartCoroutine(ShootTimer());
     }
 
@@ -18,9 +19,7 @@ public class TowerCold : Tower
 
     public override IEnumerator ShootTimer()
     {
-        // --- CORRECCIÓN: Espera inicial para evitar disparo instantáneo ---
-        yield return new WaitForSeconds(0.5f);
-        // ---------------------------------------------------------------
+        yield return new WaitForSeconds(0.5f); // Espera inicial
 
         while (true)
         {
@@ -40,7 +39,6 @@ public class TowerCold : Tower
     {
         if (bulletCold != null && shootPosition != null)
         {
-            // Usamos ObjectPool pasando el gameObject del script bulletCold
             GameObject bulletInstance = ObjectPool.Instance.GetObject(bulletCold.gameObject);
 
             bulletInstance.transform.position = shootPosition.position;
@@ -51,12 +49,21 @@ public class TowerCold : Tower
             {
                 bulletScript.SeekTarget(currentTarget.transform);
             }
+
+            // --- NUEVO: Sonido ---
+            if (audioSource != null && CurrendData.shootSound != null)
+            {
+                audioSource.PlayOneShot(CurrendData.shootSound);
+            }
         }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, CurrendData.range);
+        if (CurrendData != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, CurrendData.range);
+        }
     }
 }

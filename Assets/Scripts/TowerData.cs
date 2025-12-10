@@ -16,6 +16,6 @@ public class TowerData : ScriptableObject
     public float dmg = 20f;
     public float timeToShoot = 1f;
 
-    [Header("Audio")] // --- NUEVO ---
-    public AudioClip shootSound; // Arrastra aquí el sonido del disparo
+    [Header("Audio & Visuals")]
+    public AudioClip shootSound; // --- NUEVO: Sonido de disparo ---
 }

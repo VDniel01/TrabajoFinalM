@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 public class UIpanelManager : MonoBehaviour
 {
-    private Tower tower;
+    public static UIpanelManager instance;
+
+    [Header("UI References")]
+    public GameObject root;
     public TextMeshProUGUI towerNameTxt;
     public TextMeshProUGUI towerDescripcionTxt;
     public TextMeshProUGUI towerRangeTxt;
@@ -14,76 +17,85 @@ public class UIpanelManager : MonoBehaviour
     public TextMeshProUGUI towerVelocidadTxt;
     public TextMeshProUGUI towerSellPriceTxt;
     public TextMeshProUGUI towerUpgradePriceTxt;
-    public GameObject root;
-    public static UIpanelManager instance;
+
     public Button buttonUpgrade;
     public Button buttonSell;
 
+    [Header("Visual Range")]
+    public GameObject rangeIndicatorPrefab; // --- NUEVO: Arrastra el prefab del círculo aquí ---
+    private GameObject currentRangeIndicator;
+
+    private Tower tower;
+
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
     }
 
-    public void OpenPanel(Tower tower)
+    public void OpenPanel(Tower _tower)
     {
-        if (tower == null)
+        if (_tower == null) return;
+
+        tower = _tower;
+        root.SetActive(true);
+
+        // --- LÓGICA DEL RANGO VISUAL ---
+        if (currentRangeIndicator != null) Destroy(currentRangeIndicator);
+
+        if (rangeIndicatorPrefab != null && tower.CurrendData != null)
         {
-            Debug.Log("Es necesario pasar un tower");
-            return;
+            Vector3 pos = tower.transform.position;
+            pos.y += 0.1f; // Un poquito elevado del suelo
+            currentRangeIndicator = Instantiate(rangeIndicatorPrefab, pos, Quaternion.Euler(90, 0, 0));
+
+            // Escalamos el círculo: Rango * 2 (porque rango es radio y scale es diámetro)
+            // Ajusta este factor 2.0f si tu imagen base es muy grande o pequeña
+            float size = tower.CurrendData.range * 2.0f;
+            currentRangeIndicator.transform.localScale = new Vector3(size, size, 1);
         }
-        this.tower = tower;
+        // -------------------------------
 
-        buttonUpgrade.gameObject.SetActive(true);  // Siempre activa el botón de mejora al abrir el panel
+        UpdateButtons();
+        SetValue();
+    }
 
-        if (tower.currentIndexUpgrade >= tower.towerUpgradeData.Count)
+    private void UpdateButtons()
+    {
+        buttonUpgrade.onClick.RemoveAllListeners();
+        buttonSell.onClick.RemoveAllListeners();
+
+        buttonSell.onClick.AddListener(SellTower);
+
+        if (tower.currentIndexUpgrade < tower.towerUpgradeData.Count)
+        {
+            buttonUpgrade.gameObject.SetActive(true);
+            buttonUpgrade.onClick.AddListener(UpdateTower);
+
+            // Desactiva el botón si no tienes dinero
+            int cost = tower.towerUpgradeData[tower.currentIndexUpgrade].upgradePrice;
+            buttonUpgrade.interactable = (PlayerData.instance.money >= cost);
+        }
+        else
         {
             buttonUpgrade.gameObject.SetActive(false);
         }
-        else
-        {
-            buttonUpgrade.onClick.RemoveAllListeners();  // Limpia todos los listeners anteriores
-            buttonUpgrade.onClick.AddListener(UpdateTower);
-        }
-
-        buttonSell.onClick.RemoveAllListeners();
-        buttonSell.onClick.AddListener(SellTower);
-
-        SetValue();
-        root.SetActive(true);
     }
 
     public void UpdateTower()
     {
-        if (tower == null)
-        {
-            return;
-        }
+        if (tower == null) return;
 
-        if (PlayerData.instance.money >= tower.towerUpgradeData[tower.currentIndexUpgrade].upgradePrice)
-        {
-            tower.CurrendData = tower.towerUpgradeData[tower.currentIndexUpgrade];
-            PlayerData.instance.TakeMoney(tower.towerUpgradeData[tower.currentIndexUpgrade].upgradePrice);
+        TowerData nextUpgrade = tower.towerUpgradeData[tower.currentIndexUpgrade];
 
-            if (tower.currentIndexUpgrade + 1 >= tower.towerUpgradeData.Count)
-            {
-                buttonUpgrade.gameObject.SetActive(false);
-            }
-            else
-            {
-                tower.currentIndexUpgrade++;
-                OpenPanel(tower);  // Actualiza el panel con la nueva información
-            }
-        }
-        else
+        if (PlayerData.instance.money >= nextUpgrade.upgradePrice)
         {
-            Debug.Log("No tenemos suficiente dinero para mejorar");
+            PlayerData.instance.TakeMoney(nextUpgrade.upgradePrice);
+
+            tower.CurrendData = nextUpgrade;
+            tower.currentIndexUpgrade++;
+
+            OpenPanel(tower); // Refresca panel y rango nuevo
         }
     }
 
@@ -91,9 +103,9 @@ public class UIpanelManager : MonoBehaviour
     {
         if (tower != null)
         {
-            Debug.Log("Vendiendo torre por: " + tower.CurrendData.sellPrice);
             PlayerData.instance.AddMoney(tower.CurrendData.sellPrice);
             Destroy(tower.gameObject);
+            ClosedPanel();
 
             if (Node.selectedNode != null)
             {
@@ -102,28 +114,38 @@ public class UIpanelManager : MonoBehaviour
                 Node.selectedNode.OnCloseSelection();
                 Node.selectedNode = null;
             }
-
-            ClosedPanel();
-        }
-        else
-        {
-            Debug.LogError("Tower o Node.selectedNode es nulo. No se puede vender la torre.");
         }
     }
 
     private void SetValue()
     {
+        if (tower == null || tower.CurrendData == null) return;
+
         towerNameTxt.text = tower.towerName;
-        towerDescripcionTxt.text = tower.towerDescription;
-        towerRangeTxt.text = "Rango : " + tower.CurrendData.range.ToString();
-        towerTowerDmgTxt.text = "Daño : " + tower.CurrendData.dmg.ToString();
-        towerVelocidadTxt.text = "Velocidad : " + tower.CurrendData.timeToShoot.ToString();
-        towerSellPriceTxt.text = "$ : " + tower.CurrendData.sellPrice.ToString();
-        towerUpgradePriceTxt.text = "Mejorar : " + tower.CurrendData.upgradePrice.ToString();
+        // towerDescripcionTxt.text = tower.towerDescription;
+
+        towerRangeTxt.text = $"Rango: {tower.CurrendData.range}";
+        towerTowerDmgTxt.text = $"Daño: {tower.CurrendData.dmg}";
+        towerVelocidadTxt.text = $"Velocidad: {tower.CurrendData.timeToShoot}";
+        towerSellPriceTxt.text = $"$ {tower.CurrendData.sellPrice}";
+
+        if (tower.currentIndexUpgrade < tower.towerUpgradeData.Count)
+        {
+            towerUpgradePriceTxt.text = $"Mejorar: $ {tower.towerUpgradeData[tower.currentIndexUpgrade].upgradePrice}";
+        }
+        else
+        {
+            towerUpgradePriceTxt.text = "MAX";
+        }
     }
 
     public void ClosedPanel()
     {
         root.SetActive(false);
+        // Borramos el círculo al cerrar el panel
+        if (currentRangeIndicator != null)
+        {
+            Destroy(currentRangeIndicator);
+        }
     }
 }

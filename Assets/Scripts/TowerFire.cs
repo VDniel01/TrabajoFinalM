@@ -9,54 +9,21 @@ public class TowerFire : Tower
 
     private void Start()
     {
+        // Inicializamos audio aquí también por si acaso, aunque el padre lo hace
+        audioSource = GetComponent<AudioSource>();
         StartCoroutine(ShootTimer());
     }
 
-    private void Update()
-    {
-        EnemyDetection();
-        LookRotation();
-    }
+    // Nota: Eliminamos Update, EnemyDetection y LookRotation porque hereda de Tower
 
     private void OnMouseDown()
     {
         UIpanelManager.instance.OpenPanel(this);
     }
 
-    public override void EnemyDetection()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, CurrendData.range);
-        currentTargets = hitColliders
-            .Select(hitCollider => hitCollider.GetComponent<Enemigo>())
-            .Where(enemy => enemy != null && !enemy.isDead)
-            .ToList();
-
-        if (currentTargets.Count > 0)
-        {
-            currentTarget = currentTargets[0];
-        }
-        else
-        {
-            currentTarget = null;
-        }
-    }
-
-    public override void LookRotation()
-    {
-        if (currentTarget != null)
-        {
-            Vector3 direction = currentTarget.transform.position - rotationPart.position;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            Vector3 rotation = Quaternion.Lerp(rotationPart.rotation, lookRotation, Time.deltaTime * 10).eulerAngles;
-            rotationPart.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-        }
-    }
-
     public override IEnumerator ShootTimer()
     {
-        // --- CORRECCIÓN: Espera inicial para evitar disparo instantáneo ---
-        yield return new WaitForSeconds(0.5f);
-        // ---------------------------------------------------------------
+        yield return new WaitForSeconds(0.5f); // Espera inicial
 
         while (true)
         {
@@ -85,12 +52,12 @@ public class TowerFire : Tower
             {
                 bullet.SeekTarget(currentTarget.transform);
             }
-        }
-    }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, CurrendData.range);
+            // --- NUEVO: Sonido ---
+            if (audioSource != null && CurrendData.shootSound != null)
+            {
+                audioSource.PlayOneShot(CurrendData.shootSound);
+            }
+        }
     }
 }

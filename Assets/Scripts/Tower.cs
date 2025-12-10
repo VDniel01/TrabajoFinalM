@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// --- NUEVO: Obliga a que la torre tenga AudioSource ---
+[RequireComponent(typeof(AudioSource))]
 public class Tower : MonoBehaviour
 {
     public string towerName;
@@ -20,8 +22,15 @@ public class Tower : MonoBehaviour
     public List<TowerData> towerUpgradeData = new List<TowerData>();
     public int currentIndexUpgrade = 0;
 
+    protected AudioSource audioSource; // --- NUEVO: Referencia al audio ---
+
     private void Start()
     {
+        // Configuración de audio
+        audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 0.8f; // Sonido 3D
+
         StartCoroutine(ShootTimer());
     }
 
@@ -34,12 +43,10 @@ public class Tower : MonoBehaviour
     private void OnMouseDown()
     {
         UIpanelManager.instance.OpenPanel(this);
-
     }
 
     public virtual void EnemyDetection()
     {
-        // Protección: Si no hay datos, no hacemos nada para evitar errores
         if (CurrendData == null) return;
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, CurrendData.range);
@@ -51,7 +58,6 @@ public class Tower : MonoBehaviour
         if (currentTargets.Count > 0)
         {
             currentTarget = currentTargets[0];
-            // Debug.Log("Enemigo detectado: " + currentTarget.name); // Comentado para limpiar la consola
         }
         else
         {
@@ -72,16 +78,13 @@ public class Tower : MonoBehaviour
 
     public virtual IEnumerator ShootTimer()
     {
-        // --- CORRECCIÓN: Espera inicial de 0.5 segundos ---
-        // Esto evita el disparo instantáneo al colocar la torre
+        // Corrección: Espera inicial
         yield return new WaitForSeconds(0.5f);
-        // --------------------------------------------------
 
         while (true)
         {
             if (CurrendData == null)
             {
-                Debug.LogWarning("La torre " + gameObject.name + " no tiene Datos (ScriptableObject) asignados.");
                 yield return null;
             }
             else if (currentTarget != null)
@@ -101,8 +104,13 @@ public class Tower : MonoBehaviour
         if (bullet != null && shootPosition != null)
         {
             var bulletInstance = Instantiate(bullet, shootPosition.position, shootPosition.rotation);
-            // Aseguramos que la bala sepa cuánto daño hacer según los datos actuales de la torre
             bulletInstance.SetBullet(currentTarget, CurrendData.dmg);
+        }
+
+        // --- NUEVO: Sonido ---
+        if (audioSource != null && CurrendData != null && CurrendData.shootSound != null)
+        {
+            audioSource.PlayOneShot(CurrendData.shootSound);
         }
     }
 
