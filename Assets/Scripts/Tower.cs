@@ -103,11 +103,19 @@ public class Tower : MonoBehaviour
     {
         if (bullet != null && shootPosition != null)
         {
-            var bulletInstance = Instantiate(bullet, shootPosition.position, shootPosition.rotation);
-            bulletInstance.SetBullet(currentTarget, CurrendData.dmg);
+            // CAMBIO: Usamos el Pool en lugar de Instantiate
+            GameObject bulletObj = ObjectPool.Instance.GetObject(bullet.gameObject);
+            bulletObj.transform.position = shootPosition.position;
+            bulletObj.transform.rotation = shootPosition.rotation;
+
+            Bullet bulletScript = bulletObj.GetComponent<Bullet>();
+            if (bulletScript != null)
+            {
+                bulletScript.SetBullet(currentTarget, CurrendData.dmg);
+            }
         }
 
-        // --- NUEVO: Sonido ---
+        // Sonido de disparo (Ya lo tenías)
         if (audioSource != null && CurrendData != null && CurrendData.shootSound != null)
         {
             audioSource.PlayOneShot(CurrendData.shootSound);
